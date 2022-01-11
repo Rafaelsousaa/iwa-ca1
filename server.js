@@ -33,6 +33,46 @@ app.get('/', (req, res) => {
 
 })
 
+app.get('/blog/list', (req, res) => {
+    
+    const blog = getData()
+    res.send(blog)
+})
+
+//update blog
+app.get('/update-blog/', (req, res) => {
+    axios.get('http://localhost:5000/update-blog/:blogid')
+        .then(function(response){
+            //console.log(finds)
+           res.render('update_blog', {id: req.query.id,
+            blog: req.query.blog,
+            description: req.query.description,
+            title: req.query.title})
+            
+        })
+        .catch(err =>{
+            res.send(err);
+        })
+
+})
+
+
+app.get('/update-blog/:blogid', (req, res)=> {
+       //params
+       const id = req.params.id
+
+       const blogId = getData()
+
+       //check if it exists
+       const finds = blogId.filter( blog => blog.id === id)
+      if(finds){
+       res.send(finds)
+      }else{ 
+          res.status(404).send({ message : "Not found => id "+ id})
+          
+      }
+
+})
 
 
 //delete
